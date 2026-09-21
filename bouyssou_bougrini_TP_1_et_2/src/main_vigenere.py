@@ -1,6 +1,18 @@
 ASCII_MAX: int = 127
 ASCII_CHAR_COUNT = 128
 ASCII_ESCAPES_KEYS_COUNT = 32
+MENU_CHOICE_ENCODE = "1"
+MENU_CHOICE_EXIT = "exit"
+
+
+def display_menu() -> None:
+    print("Type :\n - 1 to encode a message using vigenere;\n - exit to leave")
+
+
+def encode_message() -> None:
+    brut_text: str = input("Text to encode: ")
+    key: str = input("Key: ")
+    print(f"Encoded text: {vigenere_cipher(brut_text, key)}")
 
 def generate_vigenere_key(starter_key: str, brut_text_length: int) -> str :
     """
@@ -42,10 +54,21 @@ def vigenere_cipher(brut_text: str, key: str) -> str :
 
     return encoded_text
 
-if __name__ == "__main__" :
-    print("Bienvenu dans le programme BOUBOU !")
-    print(vigenere_cipher("Lorem ipsum sit amet", "ZAEDQS;C;"))
-    print(vigenere_cipher("Lorem ipsum sit amet", "ZaAEDn QS;C;"))
-    print(vigenere_cipher("Lorem ipsum sit amet", "Hatim Bougrini & Martial Bouyssou ont réaliser ce programme"))
+if __name__ == "__main__":
+    print("Welcome !")
+
+    is_leaving: bool = False
+    while not is_leaving:
+        display_menu()
+        client_input: str = input("What do you want to do ? ").strip().lower()
+
+        if client_input == MENU_CHOICE_EXIT:
+            print("Bye !")
+            is_leaving = True
+        elif client_input == MENU_CHOICE_ENCODE:
+            encode_message()
+        else:
+            print("Invalid choice. Please type 1 or exit.")
+
 
     
