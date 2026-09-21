@@ -40,20 +40,28 @@ class TestVigenereCipher(unittest.TestCase):
     def test_basic_encryption(self):
         self.assertEqual(
             vigenere_cipher("ABC", "ABC"),
-            '"$&'
+            "bdf"
         )
 
     def test_encryption_with_space(self):
         self.assertEqual(
             vigenere_cipher("A A", "ABC"),
-            '"b$'
+            "bBd"
         )
 
     def test_key_repetition(self):
         self.assertEqual(
             vigenere_cipher("ABCABC", "AB"),
-            '"$$##%'
+            "bddcce"
         )
+
+    def test_non_printable_text_is_rejected(self):
+        with self.assertRaises(ValueError):
+            vigenere_cipher("ABC\n", "ABC")
+
+    def test_non_printable_key_is_rejected(self):
+        with self.assertRaises(ValueError):
+            vigenere_cipher("ABC", "AB\t")
 
 
 if __name__ == "__main__":
