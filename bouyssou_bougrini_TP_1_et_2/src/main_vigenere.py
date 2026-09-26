@@ -14,7 +14,10 @@ def encode_message() -> None:
     key: str = input("Key: ")
 
     try:
-        print(f"Encoded text: {vigenere_cipher(brut_text, key)}")
+        cipher_text=vigenere_cipher(brut_text, key)
+        print(f"Encoded text: {cipher_text}")
+        print(f"Decoded text: {vigenere_decipher(cipher_text,key)}")
+      
     except ValueError as error:
         print(f"Error: {error}")
 
@@ -62,6 +65,28 @@ def vigenere_cipher(brut_text: str, key: str) -> str :
         encoded_text += chr(ASCII_PRINTABLE_START + encoded_letter_code)
 
     return encoded_text
+    
+def vigenere_decipher(cipher_text: str, key: str)-> str:
+    """
+    cipher_text : string => your text to decode
+    key : string => key to decode the cipher_text
+    return string your decoded text with vigenere cipher  
+    """
+    ensure_printable_ascii(cipher_text, "The text")
+    ensure_printable_ascii(key, "The key")
+
+    vigenere_key: str = generate_vigenere_key(key, len(cipher_text))
+    decoded_text: str = "" 
+
+    for i in range(len(cipher_text)):
+        
+        decoded_letter_code: int = (
+            ord(cipher_text[i]) - ASCII_PRINTABLE_START - (ord(vigenere_key[i]) - ASCII_PRINTABLE_START)
+        ) % ASCII_PRINTABLE_RANGE
+
+        decoded_text += chr(ASCII_PRINTABLE_START + decoded_letter_code)
+
+    return decoded_text
 
 if __name__ == "__main__":
     print("Welcome !")
