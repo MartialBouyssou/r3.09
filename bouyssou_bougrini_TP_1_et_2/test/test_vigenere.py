@@ -63,6 +63,33 @@ class TestVigenereCipher(unittest.TestCase):
         with self.assertRaises(ValueError):
             vigenere_cipher("ABC", "AB\t")
 
+class TestVigenereCipher(unittest.TestCase):
 
+    def test_basic_encryption(self):
+        self.assertEqual(
+            vigenere_decipher("bdf", "ABC"),
+            "ABC"
+        )
+
+    def test_encryption_with_space(self):
+        self.assertEqual(
+            vigenere_decipher("bBd", "ABC"),
+            "A A"
+        )
+
+    def test_key_repetition(self):
+        self.assertEqual(
+            vigenere_cipher("bddcce", "AB"),
+            "ABCABC"
+        )
+
+    def test_non_printable_text_is_rejected(self):
+        with self.assertRaises(ValueError):
+            vigenere_decipher("ABC\n", "ABC")
+
+    def test_non_printable_key_is_rejected(self):
+        with self.assertRaises(ValueError):
+            vigenere_decipher("ABC", "AB\t")
+            
 if __name__ == "__main__":
     unittest.main()
