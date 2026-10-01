@@ -29,3 +29,6 @@ ENV/
 # OS / editor noise
 .DS_Store
 Thumbs.db
+
+#Project based 
+rapport.md

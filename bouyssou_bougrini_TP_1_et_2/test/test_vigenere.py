@@ -4,7 +4,7 @@ import unittest
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
-from src.main_vigenere import generate_vigenere_key, vigenere_cipher, vigenere_decipher
+from src.main import generate_vigenere_key, vigenere_cipher, vigenere_decipher
 
 
 class TestGenerateVigenereKey(unittest.TestCase):
