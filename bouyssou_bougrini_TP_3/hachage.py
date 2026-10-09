@@ -12,7 +12,7 @@ def hachage_car(car: str) -> int:
         TypeError: Si car n'est pas une chaîne de caractères.
         ValueError: Si car n'est pas un caractère autorisé ou si son
                     encodage UTF-8 nécessite plusieurs octets.
-    (/ ! \ Généré à l'IA)
+    (/ ! \ Documentation généré à l'IA)
     """
     if not isinstance(car, str):
         raise TypeError("Le carac doit être un string")
@@ -24,3 +24,27 @@ def hachage_car(car: str) -> int:
         raise ValueError("Le carac n'est pas pris en charge par le service que vous utilisez actuellement.")
 
     return ord(car)
+
+def hachage_etoile(texte: str) -> int:
+    """Calcule le hachage d'un texte par XOR des hachages de ses caractères.
+
+    Args:
+        texte: Texte composé de lettres ASCII et des caractères spéciaux autorisés.
+
+    Returns:
+        Le hachage du texte sous la forme d'un entier compris entre 0 et 255.
+
+    Raises:
+        TypeError: Si texte n'est pas une chaîne de caractères.
+        ValueError: Si le texte contient un caractère non autorisé.
+    (/ ! \ Documentation généré à l'IA)
+    """
+    if not isinstance(texte, str):
+        raise TypeError("Le txt doit ê une chaine de carac!!!")
+
+    resultat = 0
+
+    for car in texte:
+        resultat ^= hachage_car(car)
+
+    return resultat
