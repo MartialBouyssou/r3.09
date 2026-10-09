@@ -12,7 +12,7 @@ def hachage_car(car: str) -> int:
         TypeError: Si car n'est pas une chaîne de caractères.
         ValueError: Si car n'est pas un caractère autorisé ou si son
                     encodage UTF-8 nécessite plusieurs octets.
-    (/ ! \ Documentation généré à l'IA)
+    (/ !  Documentation généré à l'IA)
     """
     if not isinstance(car, str):
         raise TypeError("Le carac doit être un string")
@@ -37,7 +37,7 @@ def hachage_etoile(texte: str) -> int:
     Raises:
         TypeError: Si texte n'est pas une chaîne de caractères.
         ValueError: Si le texte contient un caractère non autorisé.
-    (/ ! \ Documentation généré à l'IA)
+    (/ !  Documentation généré à l'IA)
     """
     if not isinstance(texte, str):
         raise TypeError("Le txt doit ê une chaine de carac!!!")
