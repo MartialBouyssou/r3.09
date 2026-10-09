@@ -43,8 +43,8 @@ nombre_egalites = 0
 nombre_vraies_collisions = 0
 total = 0
 
-for car1 in alphabet_min:
-    for car2 in alphabet_min:
+for car1 in string.ascii_lowercase:
+    for car2 in string.ascii_lowercase:
         total += 1
 
         if hachage.hachage_car(car1) == hachage.hachage_car(car2):
@@ -103,7 +103,7 @@ def probabilites_hachage(mots: list[str]) -> None:
         print(f"{valeur} : {probabilite}")
 
 
-mots = charger_mots("bouyssou_bougrini_TP_3//ressources//ods5.txt")
+mots = charger_mots("ressources/ods5.txt")
 probabilites_hachage(mots)
 
 def recherche_collision_simplifie(fichier: str) -> tuple[str, str, int] | None:
@@ -131,7 +131,7 @@ def recherche_collision_simplifie(fichier: str) -> tuple[str, str, int] | None:
     return None
 
 
-collision = recherche_collision_simplifie("ods5.txt")
+collision = recherche_collision_simplifie("ressources/ods5.txt")
 
 if collision is None:
     print("Aucune collision trouvée.")
