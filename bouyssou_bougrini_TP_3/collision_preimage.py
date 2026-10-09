@@ -1,5 +1,5 @@
 import string
-
+from collections import Counter
 import hachage
 
 alphabet_min = [hachage.hachage_car(chr(i)) for i in range(97, 123)]
@@ -12,7 +12,7 @@ def recherche_collision(Lcaractères: list) -> list:
     Returns:
         Une liste de tuples contenant les paires de caractères qui ont le même hachage.
     """
-    collisions = []
+    collisions = [] # la liste des collisions trouvées
     for i in range(len(Lcaractères)):
         for j in range(i + 1, len(Lcaractères)):
             if Lcaractères[i] == Lcaractères[j]:
@@ -36,3 +36,72 @@ def rechercheprimage(hachage_recherche: int) -> list:
 
 print("Collisions dans l'alphabet minuscule :", recherche_collision(alphabet_min))
 print("Préimages du hachage 42 :", rechercheprimage(42))
+
+
+
+nombre_egalites = 0
+nombre_vraies_collisions = 0
+total = 0
+
+for car1 in alphabet_min:
+    for car2 in alphabet_min:
+        total += 1
+
+        if hachage.hachage_car(car1) == hachage.hachage_car(car2):
+            nombre_egalites += 1
+
+            if car1 != car2:
+                nombre_vraies_collisions += 1
+
+print("Probabilité même hachage :", nombre_egalites / total) # en admettant qu'on peut piocher 2 fois la meme lettre
+print("Probabilité vraie collision :", nombre_vraies_collisions / total)
+
+
+def charger_mots(nom_fichier: str) -> list[str]:
+    with open(nom_fichier, encoding="utf-8") as fichier:
+        return [mot.strip() for mot in fichier if mot.strip()]
+
+
+def probabilites_hachage(mots: list[str]) -> None:
+    hachages = [hachage.hachage_etoile(mot) for mot in mots]
+    compteurs = Counter(hachages) # Compte le nombre d'occurrences de chaque hachage
+
+    nombre_mots = len(mots)
+
+    # Pour chaque hachage, nombre / nombre_mots est la probabilité
+    # qu'un mot choisi au hasard possède ce hachage.
+    # On met cette probabilité au carré car on choisit deux mots :
+    # les deux doivent avoir le même hachage.
+    # On additionne ensuite le résultat pour tous les hachages.
+    probabilite_egale = sum(
+        (nombre / nombre_mots) ** 2 for nombre in compteurs.values()
+    )
+
+    # On cherche ici une vraie collision : les deux textes doivent être
+    # différents, mais avoir le même hachage.
+    if nombre_mots >= 2:
+        # nombre * (nombre - 1) compte les couples ordonnés de textes
+        # différents qui possèdent cette même valeur de hachage.
+        # Le dénominateur compte tous les couples ordonnés de textes
+        # différents possibles.
+        probabilite_collision = sum(
+            nombre * (nombre - 1) for nombre in compteurs.values()
+        ) / (nombre_mots * (nombre_mots - 1))
+    else:
+        probabilite_collision = 0
+
+    print(f"Nombre de textes : {nombre_mots}")
+    print(f"Nombre de hachages différents : {len(compteurs)}")
+    print(f"Probabilité d'égalité des hachages : {probabilite_egale}")
+    print(f"Probabilité de vraie collision : {probabilite_collision}")
+
+    print("\nProbabilité de préimage pour chaque hachage :")
+    for valeur, nombre in sorted(compteurs.items()):
+        # nombre / nombre_mots est la probabilité qu'un mot choisi
+        # au hasard ait la valeur de hachage « valeur ».
+        probabilite = nombre / nombre_mots
+        print(f"{valeur} : {probabilite}")
+
+
+mots = charger_mots("bouyssou_bougrini_TP_3//ressources//ods5.txt")
+probabilites_hachage(mots)
