@@ -4,7 +4,7 @@ import hachage
 
 alphabet_min = [hachage.hachage_car(chr(i)) for i in range(97, 123)]
 
-
+PATH = "ressources//ods5.txt"
 
 def recherche_collision(Lcaractères: list) -> list:
     """Recherche les collisions dans l'alphabet minuscule.
@@ -103,7 +103,7 @@ def probabilites_hachage(mots: list[str]) -> None:
         print(f"{valeur} : {probabilite}")
 
 
-mots = charger_mots("ressources/ods5.txt")
+mots = charger_mots(PATH)
 probabilites_hachage(mots)
 
 def recherche_collision_simplifie(fichier: str) -> tuple[str, str, int] | None:
@@ -131,7 +131,7 @@ def recherche_collision_simplifie(fichier: str) -> tuple[str, str, int] | None:
     return None
 
 
-collision = recherche_collision_simplifie("ressources/ods5.txt")
+collision = recherche_collision_simplifie(PATH)
 
 if collision is None:
     print("Aucune collision trouvée.")
