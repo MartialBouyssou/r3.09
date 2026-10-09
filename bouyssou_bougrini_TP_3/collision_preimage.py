@@ -105,3 +105,38 @@ def probabilites_hachage(mots: list[str]) -> None:
 
 mots = charger_mots("bouyssou_bougrini_TP_3//ressources//ods5.txt")
 probabilites_hachage(mots)
+
+def recherche_collision_simplifie(fichier: str) -> tuple[str, str, int] | None:
+    """Cherche deux mots différents ayant le même hachage."""
+
+    hachages = {}
+    valeurs_essayees = 0
+
+    with open(fichier, "r", encoding="utf-8") as dictionnaire:
+        for ligne in dictionnaire:
+            mot = ligne.strip()
+
+            if mot.isalpha() and mot.isascii():
+                variantes = {mot.lower(), mot.upper(), mot.capitalize()}
+
+                for variante in variantes:
+                    valeurs_essayees += 1
+                    resultat = hachage.hachage_etoile(variante)
+
+                    if resultat in hachages and hachages[resultat].lower() != variante.lower():
+                        return hachages[resultat], variante, valeurs_essayees
+
+                    hachages[resultat] = variante
+
+    return None
+
+
+collision = recherche_collision_simplifie("ods5.txt")
+
+if collision is None:
+    print("Aucune collision trouvée.")
+else:
+    mot1, mot2, essais = collision
+    print(f"Collision : {mot1} et {mot2}")
+    print(f"Hachage commun : {hachage.hachage_etoile(mot1)}")
+    print(f"Valeurs essayées : {essais}")
