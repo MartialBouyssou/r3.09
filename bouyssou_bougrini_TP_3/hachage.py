@@ -18,12 +18,12 @@ def hachage_car(car: str) -> int:
         raise TypeError("Le carac doit être un string")
 
     if len(car) != 1:
-        raise ValueError("Un UNIQUE carac doit ê passé en.")
+        raise ValueError("Un UNIQUE carac doit ê passé en param.")
 
     if not car.isascii() or not (car.isalpha() or car in "!#()*+/?"):
         raise ValueError("Le carac n'est pas pris en charge par le service que vous utilisez actuellement.")
 
-    return ord(car)
+    return f"{ord(car):08b}"
 
 def hachage_etoile(texte: str) -> int:
     """Calcule le hachage d'un texte par XOR des hachages de ses caractères.
@@ -45,6 +45,6 @@ def hachage_etoile(texte: str) -> int:
     resultat = 0
 
     for car in texte:
-        resultat ^= hachage_car(car)
+        resultat ^= int(hachage_car(car), 2)
 
-    return resultat
+    return f"{resultat:08b}"
