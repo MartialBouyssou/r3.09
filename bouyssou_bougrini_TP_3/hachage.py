@@ -23,7 +23,7 @@ def hachage_car(car: str) -> int:
     if not car.isascii() or not (car.isalpha() or car in "!#()*+/?"):
         raise ValueError("Le carac n'est pas pris en charge par le service que vous utilisez actuellement.")
 
-    return f"{ord(car):08b}"
+    return ord(car)
 
 def hachage_etoile(texte: str) -> int:
     """Calcule le hachage d'un texte par XOR des hachages de ses caractères.
@@ -45,6 +45,6 @@ def hachage_etoile(texte: str) -> int:
     resultat = 0
 
     for car in texte:
-        resultat ^= int(hachage_car(car), 2)
+        resultat ^= hachage_car(car)
 
-    return f"{resultat:08b}"
+    return resultat
