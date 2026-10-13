@@ -15,7 +15,6 @@ def generateurMotDePasse()->str:
     hachage : bytes = h.sha256(donnees).digest()
     alphabet = string.ascii_letters + string.digits + string.punctuation
 
-    # 4. Convertir les octets en 8 caractères imprimables
     resultat = "".join(
         alphabet[o % len(alphabet)] for o in hachage[:8]
     )
