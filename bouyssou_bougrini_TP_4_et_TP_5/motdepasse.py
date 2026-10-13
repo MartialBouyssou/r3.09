@@ -1,6 +1,7 @@
 import hashlib as h
 import string
 import os
+from itertools import product
 
 def changerMotDePasseMaitre() -> None:
     while True:
@@ -23,14 +24,14 @@ def recupererMotDePasseMaitre() -> str:
 def generateurMotDePasse() -> str:
     maitre: str = recupererMotDePasseMaitre()
     tag: str = input("Veuillez entrer le tag\n: ")
-    chaine: str = maitre + tag
+    return generateurMotDePassePourTag(maitre, tag, 8)
 
+def generateurMotDePassePourTag(maitre: str, tag: str, n: int) -> str:
+    chaine: str = maitre + tag
     donnees = chaine.encode("utf-8")
     hachage: bytes = h.sha256(donnees).digest()
     alphabet = string.ascii_letters + string.digits + string.punctuation
-
-    resultat = "".join(alphabet[o % len(alphabet)] for o in hachage[:8])
-    return resultat
+    return "".join(alphabet[o % len(alphabet)] for o in hachage[:n])
 
 def generateurMotDePasseChoixTaille() -> str:
     n: int = int(input("Entrer un nombre compris entre 1 et 12 !\n: "))
@@ -40,16 +41,58 @@ def generateurMotDePasseChoixTaille() -> str:
 
     maitre: str = recupererMotDePasseMaitre()
     tag: str = input("Veuillez entrer le tag\n: ")
-    chaine: str = maitre + tag
+    return generateurMotDePassePourTag(maitre, tag, n)
 
-    donnees = chaine.encode("utf-8")
-    hachage: bytes = h.sha256(donnees).digest()
+def attaqueDictionnaire(n: int, tags: list[str]) -> None:
+    maitre: str = recupererMotDePasseMaitre()
     alphabet = string.ascii_letters + string.digits + string.punctuation
 
-    resultat = "".join(alphabet[o % len(alphabet)] for o in hachage[:n])
-    return resultat
+    motsDePasseCibles = {
+        tag: "".join(
+            alphabet[o % len(alphabet)]
+            for o in h.sha256((maitre + tag).encode("utf-8")).digest()[:n]
+        )
+        for tag in tags
+    }
+
+    essais: int = 0
+
+    for caracteres in product(alphabet, repeat=10):
+        candidat: str = "".join(caracteres)
+        essais += 1
+
+        if all(
+            "".join(
+                alphabet[o % len(alphabet)]
+                for o in h.sha256((candidat + tag).encode("utf-8")).digest()[:n]
+            ) == motsDePasseCibles[tag]
+            for tag in tags
+        ):
+            print("Mot de passe maitre trouve :", candidat)
+            print("Nombre d'essais :", essais)
+            return
+
+    print("Aucun mot de passe maitre trouve.")
+    print("Nombre d'essais :", essais)
 
 if input("Voulez-vous changer le mot de passe maitre ? (o/n)\n: ").lower() == "o":
     changerMotDePasseMaitre()
 
-print(generateurMotDePasseChoixTaille())
+print("1 - Generer un mot de passe")
+print("2 - Attaque sur Unilim (N=1)")
+print("3 - Attaque sur Unilim, Amazon et Netflix (N=1)")
+print("4 - Attaque sur les trois tags (N=2)")
+print("5 - Attaque sur les trois tags (N=3)")
+
+choix: str = input("Votre choix : ")
+
+if choix == "1":
+    print(generateurMotDePasseChoixTaille())
+elif choix == "2":
+    attaqueDictionnaire(1, ["Unilim"])
+elif choix == "3":
+    attaqueDictionnaire(1, ["Unilim", "Amazon", "Netflix"])
+elif choix == "4":
+    attaqueDictionnaire(2, ["Unilim", "Amazon", "Netflix"])
+elif choix == "5":
+    attaqueDictionnaire(3, ["Unilim", "Amazon", "Netflix"])
