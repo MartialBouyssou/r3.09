@@ -81,3 +81,11 @@ motsDePasseCibles = {
 Nous utilisons SHA-256 pour calculer le hachage du mot de passe maitre concaténé avec le tag. Le résultat est ensuite transformé en caractères à l'aide de notre alphabet.
 
 La sortie est tronquée à la taille demandée : `n`.
+
+### Recherche du mot de passe maitre
+
+Le programme utilise `product()` qui génère une liste de toute les combinaison de 10 caractères possible.
+
+Chaque caractère est choisi dans l'alphabet contenant les lettres minuscules et majuscules, les chiffres et les caractères spéciaux.
+
+Pour chaque candidat, le programme calcule les mots de passe associés aux tags. Il les compare ensuite aux mots de passe cibles.
