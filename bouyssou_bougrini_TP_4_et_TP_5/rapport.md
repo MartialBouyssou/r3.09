@@ -120,12 +120,12 @@ Pour le premier test, avec le tag `Unilim`, avec une taille de mot de passe `N =
 
 Dans ce cas, le programme doit seulement trouver un candidat qui produit le même caractère que le mot de passe maitre d'origine.
 
-| Test | Taille N | Tags utilisés           | Nombre d'essais |
-| ---- | -------- | ----------------------- | --------------- |
-| 1    | 1        | Unilim                  | 74              |
-| 2    | 1        | Unilim, Amazon, Netflix | 566039          |
-| 3    | 2        | Unilim, Amazon, Netflix |                 |
-| 4    | 3        | Unilim, Amazon, Netflix |                 |
+| Test | Taille N | Tags utilisés           | Nombre d'essais    |
+| ---- | -------- | ----------------------- | ------------------ |
+| 1    | 1        | Unilim                  | 74                 |
+| 2    | 1        | Unilim, Amazon, Netflix | 566039             |
+| 3    | 2        | Unilim, Amazon, Netflix | beaucoup trop long |
+| 4    | 3        | Unilim, Amazon, Netflix | beaucoup trop long |
 
 Avec un seul caractère, beaucoup de candidats différents peuvent produire le même mot de passe. La recherche est donc rapide.
 
