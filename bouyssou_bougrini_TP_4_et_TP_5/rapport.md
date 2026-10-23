@@ -88,4 +88,76 @@ Le programme utilise `product()` qui génère une liste de toute les combinaison
 
 Chaque caractère est choisi dans l'alphabet contenant les lettres minuscules et majuscules, les chiffres et les caractères spéciaux.
 
-Pour chaque candidat, le programme calcule les mots de passe associés aux tags. Il les compare ensuite aux mots de passe cibles.
+Pour chaque candidat, le programme calcule les mots de passe pour chaque tags. Il les compare ensuite aux mots de passe cibles.
+
+```
+essais: int = 0
+
+for caracteres in product(alphabet, repeat=10):
+    candidat: str = "".join(caracteres)
+    essais += 1
+
+    if all(
+        "".join(
+            alphabet[o % len(alphabet)]
+            for o in h.sha256(
+                (candidat + tag).encode("utf-8")
+            ).digest()[:n]
+        ) == motsDePasseCibles[tag]
+        for tag in tags
+    ):
+        print("Mot de passe maitre trouve :", candidat)
+        print("Nombre d'essais :", essais)
+        return
+
+print("Aucun mot de passe maitre trouve.")
+print("Nombre d'essais :", essais)
+```
+
+### Résultats et comparaison
+
+Pour le premier test, avec le tag `Unilim`, avec une taille de mot de passe `N = 1`.
+
+Dans ce cas, le programme doit seulement trouver un candidat qui produit le même caractère que le mot de passe maitre d'origine.
+
+| Test | Taille N | Tags utilisés           | Nombre d'essais |
+| ---- | -------- | ----------------------- | --------------- |
+| 1    | 1        | Unilim                  | 74              |
+| 2    | 1        | Unilim, Amazon, Netflix | 566039          |
+| 3    | 2        | Unilim, Amazon, Netflix |                 |
+| 4    | 3        | Unilim, Amazon, Netflix |                 |
+
+Avec un seul caractère, beaucoup de candidats différents peuvent produire le même mot de passe. La recherche est donc rapide.
+
+Lorsque nous utilisons trois tags, le candidat doit produire les trois mêmes mots de passe. Les conditions sont bien plus nombreuses. C'est plus difficile.
+
+Enfin, lorsque nous augmentons la taille `N`, le nombre de caractères à retrouver augmente également. Il devient donc moins probable qu'un candidat choisi au hasard corresponde à tous les résultats attendus.
+
+### Probabilité théorique
+
+Notre alphabet contient 94 caractères possibles. Il existe donc :
+$$
+94^{10} \approx 5,39 \times 10^{19}
+$$
+mots de passe maitres possibles de 10 caractères.
+
+Retrouver le vrai mot de passe maitre par force brute est donc très difficile quand il a été choisi au hasard.
+
+Cependant, notre attaque ne cherche pas forcément le vrai mot de passe maitre. Il cherche un candidat qui donne les mêmes mots de passe pour chaque tags.
+
+En supposant qu'ils soient indépendants et uniformément répartis, la probabilité qu'un candidat corresponde à un mot de passe cible de taille `N` pour un tag est :
+$$
+P = \frac{1}{94^N}
+$$
+Avec trois tags distincts, cette probabilité devient :
+$$
+P = \frac{1}{94^{3N}}
+$$
+Pour `N = 1`, cela donne :
+$$
+P = \frac{1}{94^3}
+\approx 1,20 \times 10^{-6}
+$$
+Il faut donc environ 830 584 essais en moyenne pour trouver une correspondance sur les trois tags.
+
+Pour `N = 2` et `N = 3`, le nombre d'essais attendu augmente fortement. La recherche est donc beaucoup trop longue.
