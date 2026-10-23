@@ -58,3 +58,26 @@ Le but est de retrouver un mot de passe maitre possible sans le connaitre ! Pour
 Nous utilisons un mot de passe maitre de 10 caractères. Les tags demandés sont : `Unilim`, `Amazon` et `Netflix`.
 
 Le programme commence par encoder les mots de passe cibles grâce au vrai mot de passe maitre. Il teste ensuite les candidats de 10 caractères jusqu'à ce qu'il ait trouvé un mot de passe maitre qui match les mêmes résultats.
+
+### Génération des mots de passe cibles
+
+Pour commencer il faut récupérer le mot de passe maitre pour généré le mot de passe pour chaque tag.
+
+Les mots de passe obtenus servent de référence pendant l'attaque !
+
+```
+maitre: str = recupererMotDePasseMaitre()
+alphabet = string.ascii_letters + string.digits + string.punctuation
+
+motsDePasseCibles = {
+    tag: "".join(
+        alphabet[o % len(alphabet)]
+        for o in h.sha256((maitre + tag).encode("utf-8")).digest()[:n]
+    )
+    for tag in tags
+}
+```
+
+Nous utilisons SHA-256 pour calculer le hachage du mot de passe maitre concaténé avec le tag. Le résultat est ensuite transformé en caractères à l'aide de notre alphabet.
+
+La sortie est tronquée à la taille demandée : `n`.
