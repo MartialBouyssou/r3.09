@@ -48,3 +48,13 @@ def recupererMotDePasseMaitre() -> str:
 Le but étant d'éviter qu'à chaque génération l'on soit obligé de re-saisir le mot de passe maitre, bien que l'on demande en début de programme si l'utilisateur veut le changer.
 
 Cependant, le mot de passe est enregistré directement en clair dans le fichier. Une personne qui peut lire ce fichier peut donc récupérer le mot de passe maitre. Il serait possible d'améliorer ce point en sécurisant le stockage.
+
+## Attaque par dictionnaire
+
+### Principe de l'attaque
+
+Le but est de retrouver un mot de passe maitre possible sans le connaitre ! Pour cela on utilise des mots de passe généré pour les différents tags.
+
+Nous utilisons un mot de passe maitre de 10 caractères. Les tags demandés sont : `Unilim`, `Amazon` et `Netflix`.
+
+Le programme commence par encoder les mots de passe cibles grâce au vrai mot de passe maitre. Il teste ensuite les candidats de 10 caractères jusqu'à ce qu'il ait trouvé un mot de passe maitre qui match les mêmes résultats.
